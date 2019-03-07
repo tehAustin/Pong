@@ -12,6 +12,7 @@ import com.object.ObjectType;
 
 public class Basic_Block extends GameObject{
 
+	private boolean destroyed = false;
 	public static final int WIDTH = 32, HEIGHT = 32;
 	
 	public Basic_Block(float x, float y, ObjectType type) {
@@ -28,13 +29,22 @@ public class Basic_Block extends GameObject{
 			for (int i = 0; i < obj.getCollisionBoundaries().size(); i++) {
 				if (getCollisionBoundaries().get(i) == null) continue;
 				if (getCollisionBoundaries().get(i).intersects(obj.getCollisionBoundaries().get(i))) {
+					//if anything collides with the block
+
 
 				}
 			}
 		}
 	}
 
+	private void destroy() {
+		setDestroyed(true);
+		setVisible(false);
+	}
+
 	public void render(Graphics g) {
+		if (isDestroyed() || !isVisible()) return;
+
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.setColor(Color.DARK_GRAY);
 		g2d.drawRect((int) x, (int) y, width, height);
@@ -45,6 +55,7 @@ public class Basic_Block extends GameObject{
 	}
 	
 	public void tick(LinkedList<GameObject> objects) {
+		if (isDestroyed()) return;
 		setBoundaries();
 	}
 
@@ -54,4 +65,11 @@ public class Basic_Block extends GameObject{
 		getCollisionBoundaries().add(new Rectangle((int) x, (int) y, width, height));
 	}
 
+	public boolean isDestroyed() {
+		return destroyed;
+	}
+
+	public void setDestroyed(boolean destroyed) {
+		this.destroyed = destroyed;
+	}
 }

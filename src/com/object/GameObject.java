@@ -12,6 +12,7 @@ public abstract class GameObject {
 	protected ArrayList<Rectangle> collisionBoundaries;
 	protected ObjectType type;
 	protected float velX, velY;
+	protected boolean visible = true;
 	
 	public GameObject(float x, float y, ObjectType type) {
 		this.x = x;
@@ -33,6 +34,10 @@ public abstract class GameObject {
 
 	public float getY() {
 		return y;
+	}
+
+	public void setX(float x) {
+		this.x = x;
 	}
 
 	public void setY(float y) {
@@ -61,6 +66,14 @@ public abstract class GameObject {
 
 	public void setType(ObjectType type) {
 		this.type = type;
+	}
+
+	public boolean isVisible() {
+		return visible;
+	}
+
+	public void setVisible(boolean visible) {
+		this.visible = visible;
 	}
 
 	public ArrayList<Rectangle> getCollisionBoundaries() {

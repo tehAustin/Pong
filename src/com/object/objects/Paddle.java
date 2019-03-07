@@ -10,6 +10,7 @@ import com.object.ObjectType;
 @SuppressWarnings("Duplicates")
 public class Paddle extends GameObject {
 
+    private static final int RIGHT_COLLISION = 0, LEFT_COLLISION = 1; //indexes for collision TODO bettter system for this
     public static final int WIDTH = 10, HEIGHT = 96;
     private int aiTick = 0;
     private boolean drawCollision = true;
@@ -31,6 +32,8 @@ public class Paddle extends GameObject {
     }
 
     public void render(Graphics g) {
+        if (!isVisible()) return;
+
         Graphics2D g2d = (Graphics2D) g;
         g2d.setColor(Color.WHITE);
         g2d.fillRect((int) x, (int) y, width, height);
@@ -58,13 +61,18 @@ public class Paddle extends GameObject {
             for (int i = 0; i < obj.getCollisionBoundaries().size(); i++) {
                 if (getCollisionBoundaries().get(i) == null) continue;
                 if (getCollisionBoundaries().get(i).intersects(obj.getCollisionBoundaries().get(i))) {
-
+                    switch (i) {
+                        case RIGHT_COLLISION:
+                            if (obj.getType().equals(ObjectType.BALL)) {
+                                obj.setVelX(-obj.getVelX());
+                                obj.setVelY(-obj.getVelY());
+                            }
+                            break;
+                    }
                 }
             }
 
-            if (obj.getType() == ObjectType.BALL) {
 
-            }
         }
     }
 
