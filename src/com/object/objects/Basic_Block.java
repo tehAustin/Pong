@@ -12,7 +12,7 @@ import com.object.ObjectType;
 
 public class Basic_Block extends GameObject{
 
-	private boolean destroyed = false;
+	private boolean destroyed = false, drawCollision = false;
 	public static final int WIDTH = 32, HEIGHT = 32;
 	
 	public Basic_Block(float x, float y, ObjectType type) {
@@ -31,13 +31,13 @@ public class Basic_Block extends GameObject{
 				if (getCollisionBoundaries().get(i).intersects(obj.getCollisionBoundaries().get(i))) {
 					//if anything collides with the block
 
-
+					destroy();
 				}
 			}
 		}
 	}
 
-	private void destroy() {
+	public void destroy() {
 		setDestroyed(true);
 		setVisible(false);
 	}
@@ -49,8 +49,12 @@ public class Basic_Block extends GameObject{
 		g2d.setColor(Color.DARK_GRAY);
 		g2d.drawRect((int) x, (int) y, width, height);
 
-		for (Rectangle rect : getCollisionBoundaries()) {
-			if (rect == null) continue;
+		if (drawCollision) {
+			for (Rectangle rect : getCollisionBoundaries()) {
+				if (rect == null) continue;
+				g2d.setColor(Color.RED);
+				g2d.drawRect((int) rect.getX(), (int) rect.getY(), rect.width, rect.height);
+			}
 		}
 	}
 	
@@ -62,7 +66,10 @@ public class Basic_Block extends GameObject{
 
 	public void setBoundaries() {
 		collisionBoundaries = new ArrayList<>();
-		getCollisionBoundaries().add(new Rectangle((int) x, (int) y, width, height));
+		getCollisionBoundaries().add(new Rectangle((int) (x + ((width / 5) * 4)) + 1, (int) (y + (height / 5) / 2), width / 5, height - (height / 5))); //right
+		getCollisionBoundaries().add(new Rectangle((int) x + 1, (int) (y + (height / 5) / 2), width / 5, height - (height / 5))); //left
+		getCollisionBoundaries().add(new Rectangle((int) x + 1, (int) y, width - 2, height / 5 / 2)); //top boundary
+		getCollisionBoundaries().add(new Rectangle((int) x + 1, (int) y + height - (height / 5 / 2), width - 2, height / 5 / 2)); //top boundary
 	}
 
 	public boolean isDestroyed() {

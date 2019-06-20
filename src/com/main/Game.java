@@ -11,10 +11,10 @@ import com.ui.Window;
 public class Game extends Canvas implements Runnable {
 
 	private static final long serialVersionUID = 1L;
-	public static final int WIDTH = 800, HEIGHT = 600;
+	public static final int WIDTH = 800, HEIGHT = 605;
 	public static final String TITLE = "PONG";
 	
-	private Handler handler;
+	private static Handler handler;
 	private Thread thread;
 	private boolean running = false, paused = false;
 	
@@ -29,6 +29,7 @@ public class Game extends Canvas implements Runnable {
 		handler = new Handler(this);
 		handler.createWalls();
 		handler.addPaddles();
+		handler.addBall();
 		this.addKeyListener(new KeyInput(this));
 
 		thread = new Thread(this);
@@ -80,7 +81,7 @@ public class Game extends Canvas implements Runnable {
 		bs.show();
 	}
 
-	public Handler getHandler() {
+	public static Handler getHandler() {
 		return handler;
 	}
 	

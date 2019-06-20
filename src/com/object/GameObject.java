@@ -27,7 +27,7 @@ public abstract class GameObject {
 	public abstract void render(Graphics g);
 	
 	public abstract void tick(LinkedList<GameObject> objects);
-	
+
 	public float getX() {
 		return x;
 	}

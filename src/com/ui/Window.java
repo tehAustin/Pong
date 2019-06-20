@@ -23,8 +23,8 @@ public class Window extends JFrame {
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
-		toFront();
-		setState(Frame.NORMAL);
+		setFocusable(true);
+		requestFocusInWindow();
 
 		game.start();
 	}

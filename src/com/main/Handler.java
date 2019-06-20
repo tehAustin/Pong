@@ -5,6 +5,7 @@ import java.util.LinkedList;
 
 import com.object.GameObject;
 import com.object.ObjectType;
+import com.object.objects.Ball;
 import com.object.objects.Basic_Block;
 import com.object.objects.Paddle;
 
@@ -14,6 +15,7 @@ public class Handler {
     private LinkedList<GameObject> objects = new LinkedList<GameObject>();
     private Paddle player;
     private Paddle aiPaddle;
+    private Ball ball;
 
     Handler(Game game) {
         this.game = game;
@@ -28,6 +30,21 @@ public class Handler {
         aiPaddle = new Paddle((float) ((Game.WIDTH / 2) + (Game.WIDTH / 3.25)), (float) ((Game.HEIGHT / 2) - (Paddle.HEIGHT / 1.25)), ObjectType.AI_PADDLE);
         addObject(player);
         addObject(aiPaddle);
+    }
+
+    public void addBall() {
+        ball = new Ball((float) Game.WIDTH / 2, (float) Game.HEIGHT / 2, ObjectType.BALL);
+        addObject(ball);
+    }
+
+    public void resetBlocks() {
+        for (GameObject obj : getObjects()) {
+            if (obj == null) continue;
+            if (obj.getType().equals(ObjectType.BASIC_BLOCK)) {
+                ((Basic_Block) obj).destroy();
+            }
+        }
+        createWalls();
     }
 
     void createWalls() {
@@ -52,17 +69,41 @@ public class Handler {
     }
 
     void tick() {
-        for (GameObject o : objects) {
-            if (o == null) continue;
-            o.tick(objects);
+        try {
+            for (GameObject o : objects) {
+                if (o == null) continue;
+                o.tick(objects);
+            }
+        } catch (Exception e) {
         }
     }
 
     void render(Graphics g) {
-        for (GameObject o : objects) {
-            if (o == null) continue;
-            o.render(g);
+        try {
+            for (GameObject o : objects) {
+                if (o == null) continue;
+                o.render(g);
+            }
+        } catch (Exception e) {
         }
+    }
+
+    public Ball getBall() {
+        return ball;
+    }
+
+    public double getRelativeIntersectY(GameObject collider, GameObject collided) {
+        float colliderIntersectY = collider.getY();
+        return ((int) collided.getY() + (collided.getHeight() / 2.0)) - colliderIntersectY;
+    }
+
+    public double getNormalizedRelativeIntersectY(double relativeIntersectY, GameObject collider) {
+        float colliderMiddle = (float) (collider.getHeight() / 2.0);
+        return relativeIntersectY / (colliderMiddle);
+    }
+
+    public int getYBounceAngle(double normalizedRelativeIntersectY, final float MAX_BOUNCE_ANGLE) {
+        return (int) (normalizedRelativeIntersectY * (int) MAX_BOUNCE_ANGLE);
     }
 
     public LinkedList<GameObject> getObjects() {

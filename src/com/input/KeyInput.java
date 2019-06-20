@@ -19,6 +19,12 @@ public class KeyInput extends KeyAdapter {
         keyMap[e.getKeyCode()] = true;
 
         switch (e.getKeyCode()) {
+            case KeyEvent.VK_R:
+                handler.resetBlocks();
+                break;
+            case KeyEvent.VK_B:
+                handler.addBall();
+                break;
             case KeyEvent.VK_UP:
                 handler.getPlayer().setVelY(-10);
                 break;
